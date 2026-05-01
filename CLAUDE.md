@@ -2,7 +2,7 @@
 
 Global preferences. Project context, architecture, and build commands belong in project `./CLAUDE.md`, not here.
 
-If one thing stands above all others, it is this: **Simplicity is the ultimate sophistication. Our ultimate goal. The best code is the simplest code.**
+If one thing stands above all others, it is this: **Simplicity is the ultimate sophistication.**
 
 ## Communicating with me
 
@@ -19,7 +19,6 @@ If one thing stands above all others, it is this: **Simplicity is the ultimate s
 - **Ask before destructive operations.** Deletions, force-pushes, schema drops, `rm -rf`, cache clears, DB drops — even if you think it's safe.
 - **Don't refactor code I didn't ask you to touch.** Spot something? Leave `// TODO(claude): ...` and surface it in your reply. Flag stale TODOs you notice — don't silently let them rot.
 - **Hook-blocked = stop.** If a hook blocks an operation, surface it. Don't retry or work around it.
-- **No silent fallbacks.** If something fails — an API call, a parse, a lookup — raise. Don't swap in a default and keep going.
 - **Don't run dev servers in the foreground** unless I asked. They block the shell and I can't tell what's hanging.
 - **Branch names follow `~/.claude/rules/branching.md`.** Read it before creating any branch, unless the repo has its own enforced gitflow.
 - **New project setup:** ask if I want git hooks (`setup-git-hooks` skill).
@@ -27,7 +26,7 @@ If one thing stands above all others, it is this: **Simplicity is the ultimate s
 ## Code defaults (language-agnostic)
 
 - **Simple over clever.** Solve today's problem. No speculative abstractions.
-- **Errors are explicit, raised immediately, never swallowed.** Specific types, clear messages. Validate at the entry point — no silent fallbacks, no default-and-continue. If something fails, raise.
+- **Errors are explicit.** Specific types, clear messages. Validate at the entry point and raise immediately — never swallow, never default-and-continue.
 - **One try/catch per function max.** More than that, refactor.
 - **Type everything.** No untyped parameters, no `any`, no implicit returns.
 - **Prefer functions over classes.** Reach for classes only when you need state, resource management, or real orchestration.
