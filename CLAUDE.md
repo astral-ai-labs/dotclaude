@@ -15,6 +15,7 @@ If one thing stands above all others, it is this: **Simplicity is the ultimate s
 ## Workflow rules
 
 - **Never claim something is "done" or "working" without running it.** Compile, run tests, or hit the endpoint.
+- **When stuck, surface the blocker.** If you don't have high signal on the next step, stop and check in. Don't pile random fixes or bloat code to force progress — slow down.
 - **Ask before destructive operations.** Deletions, force-pushes, schema drops, `rm -rf`, cache clears, DB drops — even if you think it's safe.
 - **Don't refactor code I didn't ask you to touch.** Spot something? Leave `// TODO(claude): ...` and surface it in your reply. Flag stale TODOs you notice — don't silently let them rot.
 - **Hook-blocked = stop.** If a hook blocks an operation, surface it. Don't retry or work around it.
@@ -26,22 +27,14 @@ If one thing stands above all others, it is this: **Simplicity is the ultimate s
 ## Code defaults (language-agnostic)
 
 - **Simple over clever.** Solve today's problem. No speculative abstractions.
-- **Errors are explicit.** Specific types, clear messages, never swallow. See IMPORTANT #2.
-- **Fail early, fail loud.** Validate at the entry point, raise immediately. No silent fallbacks.
+- **Errors are explicit, raised early.** Specific types, clear messages, never swallow. Validate at the entry point and raise immediately.
 - **One try/catch per function max.** More than that, refactor.
 - **Type everything.** No untyped parameters, no `any`, no implicit returns.
 - **Prefer functions over classes.** Reach for classes only when you need state, resource management, or real orchestration.
-- **Names are intent, not implementation.** `calculateMonthlyPayment` not `calc`. Pick a verb (`fetch` vs `get`) and stay consistent.
+- **Names are intent, not implementation.** `calculateMonthlyPayment` not `calc`.
 - **Minimal nesting.** Early returns over nested ifs. Past 3 levels, refactor.
 - **Functions return one shape.** Pick a return type and stick to it. Don't mix `User | None | False | str`. Raise on failure or use a discriminated result.
 - **Logs:** structured anywhere a human or system might re-read them later (services, jobs, CI). Plain prints only for throwaway scripts.
-
-## IMPORTANT: REITERATING BECAUSE OF HOW IMPORTANT IT IS
-
-1. **YAGNI** — don't build for speculation. Today's problem only.
-2. **Simplest error handling the world has ever seen** — impossible to miss, trivial to diagnose. Validate at the entry point, raise immediately with a message that says exactly what failed and where. No cryptic codes, no silent swallowing. The stack trace should tell the full story.
-3. **KISS** — the simplest solution is usually the best. Avoid complexity for its own sake.
-4. **DELETE, DELETE, DELETE** — less code beats more. Before adding anything, ask if the right move is to delete and rebuild simpler. Patches on patches are how codebases rot; if a fix requires contorting existing code, the existing code is wrong. That said, don't delete just to hit a lower line count — delete code that no longer earns its place.
 
 ## Size limits (defaults — break with reason)
 
@@ -73,3 +66,10 @@ If one thing stands above all others, it is this: **Simplicity is the ultimate s
 - **Language-specific rules** (Python, TS/TSX): `~/.claude/rules/` — load automatically only when matching files are touched.
 - **Workflow rules** (e.g. `branching.md`): `~/.claude/rules/` — read on demand, referenced from this file.
 - **Project architecture, build commands, conventions**: that project's `./CLAUDE.md`, not here.
+
+## IMPORTANT: REITERATING BECAUSE OF HOW IMPORTANT IT IS
+
+1. **YAGNI** — don't build for speculation. Today's problem only.
+2. **Simplest error handling the world has ever seen** — impossible to miss, trivial to diagnose. Validate at the entry point, raise immediately with a message that says exactly what failed and where. No cryptic codes, no silent swallowing. The stack trace should tell the full story.
+3. **KISS** — the simplest solution is usually the best. Avoid complexity for its own sake.
+4. **DELETE, DELETE, DELETE** — less code beats more. Before adding anything, ask if the right move is to delete and rebuild simpler. Patches on patches are how codebases rot; if a fix requires contorting existing code, the existing code is wrong. That said, don't delete just to hit a lower line count — delete code that no longer earns its place.
