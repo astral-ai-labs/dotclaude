@@ -27,11 +27,11 @@ If one thing stands above all others, it is this: **Simplicity is the ultimate s
 ## Code defaults (language-agnostic)
 
 - **Simple over clever.** Solve today's problem. No speculative abstractions.
-- **Errors are explicit, raised early.** Specific types, clear messages, never swallow. Validate at the entry point and raise immediately.
+- **Errors are explicit, raised immediately, never swallowed.** Specific types, clear messages. Validate at the entry point — no silent fallbacks, no default-and-continue. If something fails, raise.
 - **One try/catch per function max.** More than that, refactor.
 - **Type everything.** No untyped parameters, no `any`, no implicit returns.
 - **Prefer functions over classes.** Reach for classes only when you need state, resource management, or real orchestration.
-- **Names are intent, not implementation.** `calculateMonthlyPayment` not `calc`.
+- **Names are intent, not implementation.** `calculateMonthlyPayment` not `calc`. Pick a verb (`fetch` vs `get`) and stay consistent across the codebase.
 - **Minimal nesting.** Early returns over nested ifs. Past 3 levels, refactor.
 - **Functions return one shape.** Pick a return type and stick to it. Don't mix `User | None | False | str`. Raise on failure or use a discriminated result.
 - **Logs:** structured anywhere a human or system might re-read them later (services, jobs, CI). Plain prints only for throwaway scripts.
