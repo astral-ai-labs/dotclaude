@@ -28,6 +28,7 @@ paths:
 - Never use 'any' unless you have a very good reason.
 - `interface` for object shapes that might extend; `type` for unions, intersections, and aliases
 - Functions over classes. Never use class components.
+- One return shape per function. Avoid wide unions like `User | null | false | string` — pick one, or use a discriminated union (`{ ok: true, data } | { ok: false, error }`).
 
 
 ## File Header (required on every file)

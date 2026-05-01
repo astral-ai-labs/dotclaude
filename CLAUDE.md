@@ -7,7 +7,7 @@ If one thing stands above all others, it is this: **Simplicity is the ultimate s
 ## Communicating with me
 
 - Be terse. Match my energy — if I write a one-liner, don't reply with five paragraphs.
-- Alays push back when I'm wrong. I'd rather hear "that's not right because X" than watch you go along with a flawed plan.
+- Always push back when I'm wrong. I'd rather hear "that's not right because X" than watch you go along with a flawed plan.
 - Don't open with flattery ("great question," "you're absolutely right"). Just answer, to the point.
 - If a request is ambiguous, ask a focused question before guessing. Don't invent requirements.
 - No emoji in code, commits, or PR descriptions unless I specifically asked for them.
@@ -16,7 +16,7 @@ If one thing stands above all others, it is this: **Simplicity is the ultimate s
 
 - **Never claim something is "done" or "working" without running it.** Compile, run tests, or hit the endpoint.
 - **Ask before destructive operations.** Deletions, force-pushes, schema drops, `rm -rf`, cache clears, DB drops — even if you think it's safe.
-- **Don't refactor code I didn't ask you to touch.** Spot something? Leave `// TODO(claude): ...` and mention it. Don't do it. Never let the TODOs get stale.
+- **Don't refactor code I didn't ask you to touch.** Spot something? Leave `// TODO(claude): ...` and surface it in your reply. Flag stale TODOs you notice — don't silently let them rot.
 - **Hook-blocked = stop.** If a hook blocks an operation, surface it. Don't retry or work around it.
 - **No silent fallbacks.** If something fails — an API call, a parse, a lookup — raise. Don't swap in a default and keep going.
 - **Don't run dev servers in the foreground** unless I asked. They block the shell and I can't tell what's hanging.
@@ -26,30 +26,22 @@ If one thing stands above all others, it is this: **Simplicity is the ultimate s
 ## Code defaults (language-agnostic)
 
 - **Simple over clever.** Solve today's problem. No speculative abstractions.
-- **Errors are explicit.** Specific error types, clear messages, never swallow. Full philosophy in IMPORTANT #2.
-- **Logs:** use judgment — structured context (`{"user_id": ..., "error": ...}`) for services and anything shipping to a log aggregator; plain strings fine for scripts and CLIs.
+- **Errors are explicit.** Specific types, clear messages, never swallow. See IMPORTANT #2.
+- **Fail early, fail loud.** Validate at the entry point, raise immediately. No silent fallbacks.
 - **One try/catch per function max.** More than that, refactor.
-- **Prefer functions over services.** Standalone functions in well-named modules beat class hierarchies. Reach for classes only when you need state, resource management, or real orchestration.
-- **Singletons for expensive clients.** DB connections, Redis, HTTP sessions, API clients, Celery — initialize once, reuse. Put in proper place.
-- **Type everything.** No untyped parameters, never use `any`, no implicit returns.
-- **Names are intent, not implementation.** `calculateMonthlyPayment` not `calc`. Pick a verb (`fetch` vs `get`) and stay consistent across the codebase.
-- **Early returns over nested ifs.** Past 3 levels of indentation, refactor.
+- **Type everything.** No untyped parameters, no `any`, no implicit returns.
+- **Prefer functions over classes.** Reach for classes only when you need state, resource management, or real orchestration.
+- **Names are intent, not implementation.** `calculateMonthlyPayment` not `calc`. Pick a verb (`fetch` vs `get`) and stay consistent.
+- **Minimal nesting.** Early returns over nested ifs. Past 3 levels, refactor.
+- **Functions return one shape.** Pick a return type and stick to it. Don't mix `User | None | False | str`. Raise on failure or use a discriminated result.
+- **Logs:** structured anywhere a human or system might re-read them later (services, jobs, CI). Plain prints only for throwaway scripts.
 
 ## IMPORTANT: REITERATING BECAUSE OF HOW IMPORTANT IT IS
 
-1. **YAGNI (You Aren't Gonna Need It)** — Avoid building functionality on speculation. 
-2. **Simplest Error Handling the world has ever seen**: 
-	- Errors should be impossible to miss and trivial to diagnose. 
-	- Validate at the entry point, raise immediately with a message that tells you exactly what was wrong and where.
-	- No hunting through logs, no cryptic codes, no silent swallowing. If something fails, the stack trace alone should tell the full story.
-3. **Simplicity is the ultimate sophistication**: 
-	- The simplest solution is often the best.
-	- Avoid complexity for its own sake.
-	- Keep it simple, stupid (KISS).
-4. **DELETE, DELETE, DELETE**: The best solution is usually less code, not more. 
-	- Before adding anything — a fix, a feature, a helper — ask whether the right move is to delete and rebuild simpler instead. 
-	- Patches on top of patches are how codebases rot. If you're debugging and the fix requires contorting the existing code, that's a signal the existing code is wrong, not that you need a cleverer patch. Delete it, write something cleaner. 
-	- That said, deletion for its own sake is not the goal — don't remove code just to hit a lower line count. Delete code that no longer earns its place. Simplicity is our ultimate goal.
+1. **YAGNI** — don't build for speculation. Today's problem only.
+2. **Simplest error handling the world has ever seen** — impossible to miss, trivial to diagnose. Validate at the entry point, raise immediately with a message that says exactly what failed and where. No cryptic codes, no silent swallowing. The stack trace should tell the full story.
+3. **KISS** — the simplest solution is usually the best. Avoid complexity for its own sake.
+4. **DELETE, DELETE, DELETE** — less code beats more. Before adding anything, ask if the right move is to delete and rebuild simpler. Patches on patches are how codebases rot; if a fix requires contorting existing code, the existing code is wrong. That said, don't delete just to hit a lower line count — delete code that no longer earns its place.
 
 ## Size limits (defaults — break with reason)
 

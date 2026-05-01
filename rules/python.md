@@ -16,6 +16,7 @@ paths:
 - Trailing commas in all multi-line structures
 - Type hints everywhere — no `Any`
 - Functions over classes. Classes only for Pydantic models or stateful objects that genuinely need them.
+- One return shape per function. Don't mix `User | None | False`. Raise on failure; don't sentinel-mix.
 
 ## File Header (required on every file)
 
