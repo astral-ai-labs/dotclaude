@@ -1,16 +1,23 @@
 # dotclaude
 
-My personal Claude Code config. Source of truth lives here; symlinked into `~/.claude/` so Claude Code reads it.
+My Claude Code setup. Simple. Been getting me 20-30x engineering output running with it.
+
+## How it works
+
+One always-on constitution at the root. Sidecars hang off it and only get pulled into context when relevant to the turn. Each turn Claude composes the constitution plus whatever sidecars apply. Context window stays lean.
+
+![layered context](diagrams/layered-context.svg)
 
 ## Layout
 
-- **`CLAUDE.md`** — global instructions loaded into every Claude Code session. Communication style, workflow rules, code defaults, size limits.
-- **`rules/`** — path-scoped rules. Load only when matching files are touched (frontmatter `paths:`).
-  - `python.md` — Python conventions
-  - `tsx.md` — TS/TSX conventions
-- **`skills/`** — skill definitions. Invoked by name or matched against the user's request.
-  - `nextjs-layered-architecture/` — four-layer Next.js App Router architecture (`core` → `domain` → `features` → `app`). Covers Cache Components / PPR / `'use cache'` / `updateTag` / `after()`, query patterns, mutation patterns, nested features, worked examples, and a reading list of primary-source docs.
-  - `nested-claude-md/` — creates or updates a nested `CLAUDE.md` for a complex feature or platform layer.
-  - `setup-git-hooks/` — installs project git hooks; user-triggered only.
-- **`agents/`** — personal subagent definitions. (Empty.)
-- **`commands/`** — personal slash commands. (Empty.)
+| Path | Role | When loaded |
+|------|------|-------------|
+| `CLAUDE.md` | Team-wide constitution | Always |
+| `rules/python.md`, `rules/tsx.md` | Language sidecars | Glob match on touched files |
+| `rules/branching.md` | Workflow sidecar | On demand, referenced from constitution |
+| `skills/` | Skill sidecars | On demand (Claude matches request), or user-triggered with Claude surfacing them |
+| `agents/`, `commands/` | Personal subagents and slash commands | Hidden for now, proprietary |
+| `./CLAUDE.md` | Project constitution | Always, per project |
+| `./docs/decisions.md` | Decision log | Always, per project |
+
+Git hooks (`.git/hooks/`, installed via the `setup-git-hooks` skill) run Claude headless on the commit lifecycle.
