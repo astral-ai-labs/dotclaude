@@ -22,10 +22,9 @@ paths:
 
 ```python
 # ==============================================================================
-# <module_name>.py — <short 1-2 sentence MAX>
+# <module_name>.py — <one short sentence>
 # ==============================================================================
-# Purpose: <what this module does> 2-3 concise sentences MAX.
-# Sections: Imports, Types, Functions, Public API
+# Purpose: <what this module does — ONE sentence>
 # ==============================================================================
 ```
 
@@ -61,7 +60,8 @@ __all__ = ["process_user_data"]  # start minimal, add only when needed
 ```
 
 ## Types
-- Types live in dedicated `*_types.py` files — never inline in logic files. 
+- Types live in their layer's dedicated `*_types.py` file — `api/api_types.py`, `data/data_types.py`, etc. — never inline in logic files. Don't pre-create empty files; add the file when there's at least one type to put there.
+- Errors (exception classes) are exempt: they live in a feature-level `errors.py` (or layer-level like `data/errors.py`) alongside the rest of the feature's error vocabulary.
 - Pydantic `BaseModel` or `TypedDict`s for structured data. Quick pydantic rules: 
 	1. Use `Field` when it makes sense with a concise description.
 	2. Use `ConfigDict` instead of nested class `Config` (Pydantic 2.0).

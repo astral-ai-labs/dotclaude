@@ -15,4 +15,7 @@ What this does and why it exists. 3-4 concise sentences MAX.
 ## Gotchas
 - [Non-obvious traps, ordering constraints, env requirements]
 
+## Potential Follow-ups
+- [Things flagged while building that might warrant revisiting later — pragmatic shortcuts, conscious departures from a rule, deferred work that isn't quite a TODO. Each entry: what we did / didn't do + why + when to reconsider. Empty? Delete the section.]
+
 <!-- Maintainer notes — stripped from Claude's context -->
